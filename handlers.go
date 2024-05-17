@@ -441,4 +441,7 @@ func forwardEvent(falcopayload types.FalcoPayload) {
 	if config.OTLP.Traces.Endpoint != "" && (falcopayload.Priority >= types.Priority(config.OTLP.Traces.MinimumPriority)) && (falcopayload.Source == "syscall" || falcopayload.Source == "syscalls") {
 		go otlpClient.OTLPTracesPost(falcopayload)
 	}
+        if config.Splunk.IngestToken != "" && config.Splunk.APIUrl != "" && (falcopayload.Priority >= types.Priority(config.Dynatrace.MinimumPriority) || falcopayload.Rule == testRule) {
+                go splunkClient.SplunkPost(falcopayload)
+        }
 }

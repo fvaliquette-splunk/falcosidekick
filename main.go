@@ -77,6 +77,7 @@ var (
 	openObserveClient   *outputs.Client
 	dynatraceClient     *outputs.Client
 	otlpClient          *outputs.Client
+        splunkClient        *outputs.Client
 
 	statsdClient, dogstatsdClient *statsd.Client
 	config                        *types.Configuration
@@ -786,6 +787,18 @@ func init() {
 			shutDownFuncs = append(shutDownFuncs, otlpClient.ShutDownFunc)
 		}
 	}
+
+        if config.Splunk.IngestToken != "" && config.Splunk.APIUrl != "" {
+                var err error
+                splunkApiUrl := strings.TrimRight(config.Splunk.APIUrl, "/") + "/v2/event"
+                splunkClient, err = outputs.NewClient("Splunk", splunkApiUrl, false, config.Splunk.CheckCert, *initClientArgs)
+                if err != nil {
+                        config.Splunk.IngestToken = ""
+                        config.Splunk.APIUrl = ""
+                } else {
+                        outputs.EnabledOutputs = append(outputs.EnabledOutputs, "Splunk")
+                }
+        }
 
 	log.Printf("[INFO]  : Falco Sidekick version: %s\n", GetVersionInfo().GitVersion)
 	log.Printf("[INFO]  : Enabled Outputs : %s\n", outputs.EnabledOutputs)

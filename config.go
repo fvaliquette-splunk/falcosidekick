@@ -514,7 +514,12 @@ func getConfig() *types.Configuration {
 	// it to 1000ms by default, override-able via OTLP_DURATION environment variable.
 	v.SetDefault("OTLP.Traces.Duration", 1000)
 
-	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+        v.SetDefault("Splunk.IngestToken", "")
+        v.SetDefault("Splunk.APIUrl", "")
+        v.SetDefault("Splunk.CheckCert", false)
+        v.SetDefault("Splunk.MinimumPriority", "")	
+
+        v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	v.AutomaticEnv()
 	if *configFile != "" {
 		d, f := path.Split(*configFile)

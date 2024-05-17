@@ -113,6 +113,7 @@ type Configuration struct {
 	OpenObserve        OpenObserveConfig
 	Dynatrace          DynatraceOutputConfig
 	OTLP               OTLPOutputConfig
+        Splunk             SplunkOutputConfig
 }
 
 // InitClientArgs represent a client parameters for initialization
@@ -793,6 +794,13 @@ type OTLPOutputConfig struct {
 	Traces OTLPTraces
 }
 
+type SplunkOutputConfig struct {
+        IngestToken     string
+        APIUrl          string
+        MinimumPriority string
+        CheckCert       bool
+}
+
 // Statistics is a struct to store stastics
 type Statistics struct {
 	Requests          *expvar.Map
@@ -861,6 +869,7 @@ type Statistics struct {
 	OpenObserve       *expvar.Map
 	Dynatrace         *expvar.Map
 	OTLPTraces        *expvar.Map
+        Splunk            *expvar.Map
 }
 
 // PromStatistics is a struct to store prometheus metrics

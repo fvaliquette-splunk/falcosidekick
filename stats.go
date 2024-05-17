@@ -86,6 +86,7 @@ func getInitStats() *types.Statistics {
 		OpenObserve:       getOutputNewMap("openobserve"),
 		Dynatrace:         getOutputNewMap("dynatrace"),
 		OTLPTraces:        getOutputNewMap("otlptraces"),
+		Splunk:            getOutputNewMap("splunk"),
 	}
 	stats.Falco.Add(outputs.Emergency, 0)
 	stats.Falco.Add(outputs.Alert, 0)
